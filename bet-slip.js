@@ -28,39 +28,86 @@
     } catch (e) {}
   }
 
-  // রেসপন্সিভ সিএসএস
+  // মোবাইল অপ্টিমাইজড রেসপন্সিভ সিএসএস
   const style = document.createElement('style');
+  style.id = 'qbi-custom-styles';
   style.innerHTML = `
     #${WIDGET_ID} {
       position: fixed !important;
       top: 0 !important;
       left: 0 !important;
       width: 100vw !important;
-      background: #0f172a !important;
+      background: #090d16 !important;
       color: #ffffff !important;
       border-bottom: 2px solid #38bdf8 !important;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.85) !important;
+      z-index: 2147483647 !important;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+      user-select: none !important;
+      box-sizing: border-box !important;
+      padding: 6px 10px !important;
       display: flex !important;
       flex-wrap: wrap !important;
       align-items: center !important;
       justify-content: space-between !important;
-      padding: 6px 12px !important;
-      box-sizing: border-box !important;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.8) !important;
-      z-index: 2147483647 !important;
-      font-family: -apple-system, BlinkMacSystemFont, Arial, sans-serif !important;
-      user-select: none !important;
       gap: 6px !important;
     }
-    .qbi-sec { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
-    @media (max-width: 600px) {
+    .qbi-group {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .qbi-btn-preset {
+      background: #1e293b;
+      color: #f8fafc;
+      border: 1px solid #334155;
+      border-radius: 4px;
+      padding: 5px 8px;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      touch-action: manipulation;
+    }
+    .qbi-btn-preset:active {
+      background: #38bdf8;
+      color: #000;
+    }
+    .qbi-label-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      font-size: 11px;
+      cursor: pointer;
+      color: #cbd5e1;
+    }
+
+    /* মোবাইল স্ক্রিন অপ্টিমাইজেশন (Max Width: 768px) */
+    @media (max-width: 768px) {
       #${WIDGET_ID} {
-        flex-direction: column !important;
-        align-items: stretch !important;
-        padding: 8px !important;
+        padding: 6px 8px !important;
+        gap: 5px !important;
       }
-      .qbi-sec {
-        justify-content: space-between !important;
+      .qbi-row-main {
         width: 100% !important;
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+      }
+      .qbi-row-sub {
+        width: 100% !important;
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        border-top: 1px solid #1e293b;
+        padding-top: 4px;
+      }
+      .qbi-btn-preset {
+        padding: 4px 6px !important;
+        font-size: 10px !important;
+      }
+      #qbi-stake-number {
+        width: 58px !important;
       }
     }
   `;
@@ -70,43 +117,47 @@
   bar.id = WIDGET_ID;
 
   bar.innerHTML = `
-    <div class="qbi-sec">
-      <span style="font-weight:bold; font-size:12px; color:#38bdf8;">⚡ FAST BET</span>
-      <input type="text" id="qbi-stake-number" value="${heldStake}" placeholder="Stake" style="width:65px; padding:3px 4px; background:#1e293b; color:#38bdf8; border:1px solid #334155; border-radius:4px; font-size:12px; font-weight:bold; text-align:center; outline:none;" />
-      <div style="display:flex; gap:3px;">
-        <button class="qbi-preset-btn" data-val="100" style="background:#334155; color:#fff; border:none; border-radius:3px; padding:3px 6px; font-size:11px; cursor:pointer;">100</button>
-        <button class="qbi-preset-btn" data-val="500" style="background:#334155; color:#fff; border:none; border-radius:3px; padding:3px 6px; font-size:11px; cursor:pointer;">500</button>
-        <button class="qbi-preset-btn" data-val="1000" style="background:#334155; color:#fff; border:none; border-radius:3px; padding:3px 6px; font-size:11px; cursor:pointer;">1K</button>
-        <button class="qbi-preset-btn" data-val="5000" style="background:#334155; color:#fff; border:none; border-radius:3px; padding:3px 6px; font-size:11px; cursor:pointer;">5K</button>
+    <!-- লাইন ১ (মোবাইলে উপরের লাইন): লোগো, ইনপুট, প্রি-সেট ও অ্যাক্টিভ বাটন -->
+    <div class="qbi-group qbi-row-main">
+      <div style="display:flex; align-items:center; gap:5px;">
+        <span style="font-weight:900; font-size:12px; color:#38bdf8;">⚡FAST</span>
+        <input type="text" id="qbi-stake-number" value="${heldStake}" placeholder="Stake" style="width:65px; padding:4px; background:#1e293b; color:#38bdf8; border:1px solid #334155; border-radius:4px; font-size:12px; font-weight:bold; text-align:center; outline:none;" />
+        <div style="display:flex; gap:3px;">
+          <button class="qbi-btn-preset" data-val="100">100</button>
+          <button class="qbi-btn-preset" data-val="500">500</button>
+          <button class="qbi-btn-preset" data-val="1000">1K</button>
+          <button class="qbi-btn-preset" data-val="5000">5K</button>
+        </div>
+      </div>
+      <div style="display:flex; align-items:center; gap:6px;">
+        <button id="qbi-status-toggle" style="padding:4px 8px; background:#16a34a; color:white; border:none; border-radius:4px; font-size:10px; font-weight:bold; cursor:pointer;">ACTIVE</button>
+        <button id="qbi-close-ui" title="Close" style="background:none; border:none; color:#94a3af; font-size:15px; cursor:pointer; line-height:1;">✕</button>
       </div>
     </div>
 
-    <div class="qbi-sec" style="font-size:11px;">
-      <label style="display:flex; align-items:center; gap:2px; cursor:pointer;">
-        <input type="checkbox" id="qbi-toggle-sound" ${soundEnabled ? 'checked' : ''}> 🔔
-      </label>
-      <label style="display:flex; align-items:center; gap:2px; cursor:pointer;">
-        <input type="checkbox" id="qbi-toggle-accept" ${acceptOddsEnabled ? 'checked' : ''}> ✅ Auto-Odds
-      </label>
-      <label style="display:flex; align-items:center; gap:2px; cursor:pointer;">
-        <input type="checkbox" id="qbi-toggle-limit" ${limitEnabled ? 'checked' : ''}> 🛑 Limit
-      </label>
-      <input type="number" id="qbi-limit-val" value="${maxBetLimit}" style="width:36px; padding:2px; background:#1e293b; color:#fff; border:1px solid #334155; border-radius:3px; font-size:11px; text-align:center;" />
-      <div id="qbi-bet-counter" title="Reset Count" style="background:#0284c7; padding:2px 6px; border-radius:8px; font-weight:bold; cursor:pointer;">
-        Placed: <span id="qbi-count-num">${betCount}</span> ⟲
+    <!-- লাইন ২ (মোবাইলে নিচের লাইন): টগল, লিমিট এবং কাউন্টার -->
+    <div class="qbi-group qbi-row-sub">
+      <div style="display:flex; align-items:center; gap:8px;">
+        <label class="qbi-label-item">
+          <input type="checkbox" id="qbi-toggle-sound" ${soundEnabled ? 'checked' : ''}> 🔔
+        </label>
+        <label class="qbi-label-item">
+          <input type="checkbox" id="qbi-toggle-accept" ${acceptOddsEnabled ? 'checked' : ''}> ✅ Odds
+        </label>
+        <label class="qbi-label-item">
+          <input type="checkbox" id="qbi-toggle-limit" ${limitEnabled ? 'checked' : ''}> 🛑 Limit
+        </label>
+        <input type="number" id="qbi-limit-val" value="${maxBetLimit}" style="width:34px; padding:2px; background:#1e293b; color:#fff; border:1px solid #334155; border-radius:3px; font-size:10px; text-align:center;" />
       </div>
-    </div>
-
-    <div class="qbi-sec" style="justify-content:flex-end;">
-      <button id="qbi-status-toggle" style="padding:4px 10px; background:#16a34a; color:white; border:none; border-radius:4px; font-size:11px; font-weight:bold; cursor:pointer;">
-        ACTIVE
-      </button>
-      <button id="qbi-close-ui" title="Close" style="background:none; border:none; color:#9ca3af; font-size:16px; cursor:pointer; line-height:1;">✕</button>
+      <div id="qbi-bet-counter" title="Reset Counter" style="background:#0284c7; padding:2px 6px; border-radius:10px; font-size:10px; font-weight:bold; cursor:pointer;">
+        Bets: <span id="qbi-count-num">${betCount}</span> ⟲
+      </div>
     </div>
   `;
 
   document.documentElement.appendChild(bar);
 
+  // রেফারেন্স ও কন্ট্রোল লজিক
   const input = bar.querySelector('#qbi-stake-number');
   const toggle = bar.querySelector('#qbi-status-toggle');
   const soundCb = bar.querySelector('#qbi-toggle-sound');
@@ -116,7 +167,7 @@
   const counterNum = bar.querySelector('#qbi-count-num');
   const counterBadge = bar.querySelector('#qbi-bet-counter');
 
-  bar.querySelectorAll('.qbi-preset-btn').forEach(btn => {
+  bar.querySelectorAll('.qbi-btn-preset').forEach(btn => {
     btn.addEventListener('click', () => {
       heldStake = btn.dataset.val;
       input.value = heldStake;
@@ -188,10 +239,10 @@
 
     if (limitEnabled && betCount >= maxBetLimit) {
       isEnabled = false;
-      const toggle = document.querySelector('#qbi-status-toggle');
-      if (toggle) {
-        toggle.innerText = 'LIMIT REACHED';
-        toggle.style.background = '#dc2626';
+      const t = document.querySelector('#qbi-status-toggle');
+      if (t) {
+        t.innerText = 'LIMIT';
+        t.style.background = '#dc2626';
       }
       return;
     }
